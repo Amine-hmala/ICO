@@ -22,9 +22,10 @@ def generate_initial_solution(customers, num_vehicles):
     """Generates an initial solution by randomly distributing customers among vehicles."""
     random.shuffle(customers)
     routes = np.array_split(customers, num_vehicles)
+    print([list(route) for route in routes])
     return [list(route) for route in routes]
 
-def tabu_search(customers, distance_matrix, max_iterations=100, tabu_tenure=10, num_vehicles=3):
+def tabu_search(customers, distance_matrix, num_vehicles,locations, max_iterations=100, tabu_tenure=10):
     best_solution = generate_initial_solution(customers, num_vehicles)
     best_cost = calculate_cost(best_solution, distance_matrix)
     current_solution = copy.deepcopy(best_solution)
@@ -54,7 +55,7 @@ def tabu_search(customers, distance_matrix, max_iterations=100, tabu_tenure=10, 
             if current_cost < best_cost:
                 best_solution = copy.deepcopy(current_solution)
                 best_cost = current_cost
-    
+        plot_solution(best_solution, locations)
     return best_solution, best_cost
 
 def plot_solution(routes, locations):
